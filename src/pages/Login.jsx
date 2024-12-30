@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   const { handleLogin, loading } = useAuth(); // Use loading from useAuth
-  const [credentials, setCredentials] = useState({ email: '', password: '' }); // State for email and password
+  const [credentials, setCredentials] = useState({ username: '', password: '' }); // State for email and password
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -42,9 +42,9 @@ const Login = () => {
               Email
             </label>
             <input
-              type="email"
-              name="email"
-              value={credentials.email}
+              type="username"
+              name="username"
+              value={credentials.username}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
