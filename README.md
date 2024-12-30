@@ -9,8 +9,8 @@ https://taskmanager-1-2y65.onrender.com/api-docs/
 App on React can be find on:
 https://ramontaskmanager.netlify.app/
 
-- The user to test: ramon
-- The password: 1234
+- The user to test: `ramon`
+- The password: `1234`
 
 ## Features
 
