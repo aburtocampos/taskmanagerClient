@@ -4,19 +4,24 @@ import useAuth from '../hooks/useAuth';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const { handleLogin } = useAuth();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const { handleLogin, loading } = useAuth(); // Use loading from useAuth
+  const [credentials, setCredentials] = useState({ email: '', password: '' }); // State for email and password
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setCredentials({ ...credentials, [name]: value });
+  };
+
   const onSubmit = async e => {
     e.preventDefault();
-    const success = await handleLogin({ username, password });
+    setError('');
+    const success = await handleLogin(credentials); // Use credentials for login
     if (success) {
-      navigate('/'); // Redirige a la página principal
+      navigate('/'); // Redirect to the main page
     } else {
-      setError('Credenciales inválidas. Por favor, intente nuevamente.');
+      setError('Invalid credentials. Please try again.');
     }
   };
 
@@ -34,12 +39,13 @@ const Login = () => {
         <form onSubmit={onSubmit}>
           <div className="mb-4">
             <label className="block mb-2 text-sm font-medium text-gray-700">
-              Username
+              Email
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={e => setUsername(e.target.value)}
+              type="email"
+              name="email"
+              value={credentials.email}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -50,23 +56,27 @@ const Login = () => {
             </label>
             <input
               type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              name="password"
+              value={credentials.password}
+              onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={loading} // Disable button while loading
           >
-            Login
+            {loading ? 'Logging in...' : 'Login'} {/* Show loading text */}
           </button>
         </form>
         <p className="text-sm text-center mt-4">
-          ¿No tienes una cuenta?{' '}
+          Don’t have an account?{' '}
           <Link to="/register" className="text-blue-500 hover:underline">
-            Regístrate
+            Register
           </Link>
         </p>
       </div>
